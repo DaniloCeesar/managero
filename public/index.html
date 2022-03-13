@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="theme-color" content="#000000">
+    <meta name="author" content="Danilo César">
+    <title>manaĝero</title>
+
+    <link href="./favicon.ico" rel="icon">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" integrity="sha256-5veQuRbWaECuYxwap/IOE/DAwNxgm4ikX7nrgsqYp88=" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body class="grid min-h-screen grid-cols-12 gap-0" x-data="app()" x-init="$watch('tasks', (val) => localStorage.setItem('tasks', JSON.stringify(val)))">
+
+    <aside class="flex flex-col min-h-screen col-span-2 2xl:col-span-2 bg-slate-50">
+        <div class="px-4 py-5">
+            <a href="#" class="flex items-center text-lg font-bold text-indigo-600 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-current icon icon-tabler icon-tabler-checkbox" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <polyline points="9 11 12 14 20 6"></polyline>
+                    <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                </svg>
+                <span class="ml-3">manaĝero</span>
+            </a>
+        </div>
+
+        <div class="px-3 overflow-y-auto rounded" x-data="{ navbarActive: 'inbox', sidebarFavoritesIsOpen: (lists.length > 0), sidebarSortedIsOpen: false, }">
+            <ul class="mt-2 space-y-1">
+                <li>
+                    <a href="#" class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg group"
+                    :class="(navbarActive == 'activity') ? 'text-indigo-700 bg-indigo-100' : 'hover:bg-gray-100 hover:text-indigo-500'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500 transition duration-75 icon icon-tabler icon-tabler-bolt icon-tabler-inbox group-hover:text-indigo-500" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <polyline points="13 3 13 10 19 10 11 21 11 14 5 14 13 3"></polyline>
+                        </svg>
+                        <span class="flex-1 ml-3 whitespace-nowrap">Activity</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg group"
+                    :class="(navbarActive == 'inbox') ? 'text-indigo-700 bg-indigo-100' : 'hover:bg-gray-100 hover:text-indigo-500'">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500 transition duration-75 icon icon-tabler icon-tabler-circle-check icon-tabler-inbox group-hover:text-indigo-500" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path d="M9 12l2 2l4 -4"></path>
+                        </svg>
+                        <span class="flex-1 ml-3 whitespace-nowrap">My tasks</span>
+                        <span class="inline-flex items-center justify-center px-2 ml-3 text-xs font-bold rounded-full text-gray-700/50" x-text="tasks.length"></span>
+                    </a>
+                </li>
+
+                <div class="pt-4"></div>
+
+                <li>
+                    <button type="button" class="flex items-center w-full p-2 text-xs font-semibold text-gray-500 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sidebar-dropdown-sorted"
+                    title="Show/hide panel"
+                    @click.prevent="sidebarSortedIsOpen = !sidebarSortedIsOpen">
+                        <span class="flex-1 text-left whitespace-nowrap">
+                            Smart Folders
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 icon icon-tabler icon-tabler-chevron-down" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"
+                        :class="sidebarSortedIsOpen ? 'rotate-180' : ''">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <ul id="sidebar-dropdown-sorted" class="py-0 space-y-0" x-show="sidebarSortedIsOpen" x-transition x-cloak>
+                        <li>
+                            <a href="#" class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-100 hover:text-indigo-500 group">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500 transition duration-75 icon icon-tabler icon-tabler-calendar-event group-hover:text-indigo-500" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <rect x="4" y="5" width="16" height="16" rx="2"></rect>
+                                    <line x1="16" y1="3" x2="16" y2="7"></line>
+                                    <line x1="8" y1="3" x2="8" y2="7"></line>
+                                    <line x1="4" y1="11" x2="20" y2="11"></line>
+                                    <rect x="8" y="15" width="2" height="2"></rect>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Due Today</span>
+                                <span class="inline-flex items-center justify-center px-2 ml-3 text-xs font-bold rounded-full text-gray-700/50"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-100 hover:text-indigo-500 group">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500 transition duration-75 icon icon-tabler icon-tabler-calendar-time group-hover:text-indigo-500" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4"></path>
+                                    <circle cx="18" cy="18" r="4"></circle>
+                                    <path d="M15 3v4"></path>
+                                    <path d="M7 3v4"></path>
+                                    <path d="M3 11h16"></path>
+                                    <path d="M18 16.496v1.504l1 1"></path>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Upcoming</span>
+                                <span class="inline-flex items-center justify-center px-2 ml-3 text-xs font-bold rounded-full text-gray-700/50"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-100 hover:text-indigo-500 group">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500 transition duration-75 rotate-45 icon icon-tabler icon-tabler-pinned group-hover:text-indigo-500" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M9 4v6l-2 4v2h10v-2l-2 -4v-6"></path>
+                                    <line x1="12" y1="16" x2="12" y2="21"></line>
+                                    <line x1="8" y1="4" x2="16" y2="4"></line>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Pinned</span>
+                                <span class="inline-flex items-center justify-center px-2 ml-3 text-xs font-bold rounded-full text-gray-700/50"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-100 hover:text-indigo-500 group">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500 transition duration-75 icon icon-tabler icon-tabler-history group-hover:text-indigo-500" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <polyline points="12 8 12 12 14 14"></polyline>
+                                    <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Recent</span>
+                                <span class="inline-flex items-center justify-center px-2 ml-3 text-xs font-bold rounded-full text-gray-700/50"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-100 hover:text-indigo-500 group">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500 transition duration-75 icon icon-tabler icon-tabler-trash group-hover:text-indigo-500" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="4" y1="7" x2="20" y2="7"></line>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Trash</span>
+                                <span class="inline-flex items-center justify-center px-2 ml-3 text-xs font-bold rounded-full text-gray-700/50"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <div class="pt-2"></div>
+
+                <li>
+                    <button type="button" class="flex items-center w-full p-2 text-xs font-semibold text-gray-500 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sidebar-dropdown-folders"
+                    title="Show/hide panel"
+                    @click.prevent="sidebarFavoritesIsOpen = !sidebarFavoritesIsOpen">
+                        <span class="flex-1 text-left whitespace-nowrap">Folders</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 icon icon-tabler icon-tabler-chevron-down" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"
+                        :class="sidebarFavoritesIsOpen ? 'rotate-180' : ''">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <ul id="sidebar-dropdown-folders" class="py-0 space-y-0" x-show="sidebarFavoritesIsOpen" x-transition x-cloak>
+                        <template x-for="list in lists" :key="list.id">
+                            <li>
+                                <a href="#" class="flex items-center w-full p-2 text-sm font-medium text-gray-500 transition duration-75 rounded-lg hover:bg-indigo-100 group"
+                                :class="['hover:' + list.background + '/80', 'hover:' + list.foreground + '/80']">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500 transition duration-75 icon icon-tabler icon-tabler-folder" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"
+                                    :class="list.foreground + '/80'">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                                        x-show="list.icon == 'cloud'" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                                        x-show="list.icon == 'star'" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
+                                        x-show="list.icon == 'server'" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                        x-show="list.icon == 'cube'" />
+                                    </svg>
+                                    
+                                    <span class="flex-1 ml-4 overflow-hidden whitespace-nowrap text-ellipsis" x-text="list.title"></span>
+
+                                    <span class="inline-flex items-center justify-center p-1 ml-3 text-sm font-normal text-gray-500 rounded-full group-hover:text-gray-500" x-show="list.is_favorite">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 rotate-45 icon icon-tabler icon-tabler-pinned" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M9 4v6l-2 4v2h10v-2l-2 -4v-6"></path>
+                                            <line x1="12" y1="16" x2="12" y2="21"></line>
+                                            <line x1="8" y1="4" x2="16" y2="4"></line>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </li>
+                        </template>
+                        
+                        <div class="pt-1"></div>
+        
+                        <li>
+                            <a href="#" class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-100 hover:text-indigo-500 group">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 icon icon-tabler icon-tabler-plus" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                <span class="flex-1 ml-4 whitespace-nowrap">New folder</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>            
+        </div>
+
+        <div class="p-3 mt-auto">
+            <div @click="userDropdownIsOpen = ! userDropdownIsOpen">
+                <span class="inline-flex w-full rounded-md">
+                    <button type="button" class="inline-flex items-center justify-between w-full p-2 transition rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 active:bg-gray-50 group">
+                        <img class="w-8 h-8 rounded-full" x-bind:src="users[0]['avatar']" x-bind:alt="users[0]['full_name']">
+
+                        <div class="flex flex-col items-start ml-3">
+                            <p class="text-sm font-medium text-gray-700" x-text="users[0]['first_name']"></p>
+                            <p class="text-xs font-normal text-gray-500">Never synced</p>
+                        </div>
+            
+                        <svg class="ml-auto -mr-0.5 h-4 w-4 text-gray-500 group-hover:text-gray-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="col-span-8 bg-white 2xl:col-span-8">
+        <div id="main-header" class="flex flex-col justify-between w-full bg-slate-50">
+            <div class="flex items-center justify-between w-full px-4 py-3">
+                <ul class="flex flex-wrap">
+                    <li class="mr-2">
+                        <a href="#" class="inline-block px-3 py-2 text-sm font-medium text-center text-indigo-700 bg-indigo-100 rounded-lg" aria-current="page">
+                            Tasks
+                        </a>
+                    </li>
+                    <li class="mr-2">
+                        <a href="#" class="inline-block px-3 py-2 text-sm font-medium text-center text-gray-500 rounded-lg hover:text-indigo-500 hover:bg-gray-100">
+                            Boards
+                        </a>
+                    </li>
+                    <li class="mr-2">
+                        <a class="inline-block px-3 py-2 text-sm font-medium text-center text-gray-500 text-opacity-50 cursor-not-allowed">
+                            Users
+                        </a>
+                    </li>
+                    <li>
+                        <a class="inline-block px-3 py-2 text-sm font-medium text-center text-gray-500 text-opacity-50 cursor-not-allowed">
+                            Attachments
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="flex items-center gap-2 ml-auto">
+                    <div class="relative text-gray-500">
+                        <input type="search" name="serch" placeholder="Search&hellip;" class="w-full h-10 px-5 pr-10 text-sm transition-all bg-transparent border border-gray-200 rounded-md shadow-sm hover:shadow focus:ring-0 focus:outline-none focus:bg-white hover:bg-white">
+                        <button type="submit" class="absolute top-0 mt-3 mr-4 right-1">
+                            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+                                <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <button type="button" class="flex items-center justify-center w-10 h-10 text-sm font-semibold text-center text-white transition duration-200 ease-in bg-indigo-500 rounded-lg shadow-sm hover:shadow hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2" title="New task"
+                    @click.prevent="currentTaskId = create_task(); modalTaskEdit = true;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-container" class="pt-4 overflow-y-auto border rounded-t-md drop-shadow-sm" style="min-height:calc(100vh - 64px - 1px);">
+
+            <div id="view-spreadsheet">
+                <div class="flex flex-col">
+                    <div class="-my-2 overflow-x-auto">
+                        <div class="inline-block min-w-full px-4 py-2 align-middle">
+                            <div class="overflow-hidden border-b border-gray-200">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="cursor-default">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Tasks</th>
+                                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Status</th>
+                                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Assignees</th>
+                                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Folders</th>
+                                            <th scope="col" class="relative px-6 py-3">
+                                                <span class="sr-only">Actions</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+
+                                        <template x-for="task in tasks" :key="task.id">
+                                            <tr class="transition-colors bg-white group hover:bg-gray-50">
+                                                <td class="flex items-center gap-3 px-6 py-3 whitespace-nowrap">
+                                                    <label class="inline-flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 icon icon-tabler icon-tabler-square-check" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"
+                                                        :class="task.status === 1 ? 'bi bi-check-circle-fill text-indigo-500' : 'bi bi-circle text-gray-500'"
+                                                        @click.prevent="tasks = tasks.map(m => m.id === task.id ? { ...m, status: (task.status === 1 ? 0 : 1 ) } : m)">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+
+                                                            <path d="M9 12l2 2l4 -4" x-show="task.status === 1" x-cloak></path>
+                                                        </svg>
+
+                                                        <a href="#" class="ml-2 text-sm text-gray-700 group-hover:text-gray-900" x-text="task.title" title="View this task"
+                                                        @click.prevent="currentTaskId = task.id; modalTaskEdit = true;"></a>
+                                                    </label>
+
+                                                    <a href="#" class="flex items-center text-gray-400 hover:text-indigo-500" title="View comments for this task"
+                                                    x-show="task.comments.length > 0"
+                                                    @click.prevent="currentTaskId = task.id; modalTaskEdit = true;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 icon icon-tabler icon-tabler-message-circle" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1"></path>
+                                                            <line x1="12" y1="12" x2="12" y2="12.01"></line>
+                                                            <line x1="8" y1="12" x2="8" y2="12.01"></line>
+                                                            <line x1="16" y1="12" x2="16" y2="12.01"></line>
+                                                        </svg>
+                                                        <p class="ml-1 text-sm leading-none" x-text="task.comments.length"></p>
+                                                    </a>
+                                                    <a href="#" class="flex items-center text-gray-400 hover:text-indigo-500" title="View attachments for this task"
+                                                    x-show="task.files.length > 0"
+                                                    @click.prevent="currentTaskId = task.id; modalTaskEdit = true;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 icon icon-tabler icon-tabler-paperclip" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5"></path>
+                                                        </svg>
+                                                        <p class="ml-1 text-sm leading-none" x-text="task.files.length"></p>
+                                                    </a>
+                                                    
+                                                    <a href="#" class="flex items-center text-gray-400 hover:text-indigo-500" title="Pinned task"
+                                                    x-show="task.pinned"
+                                                    @click.prevent="currentTaskId = task.id; modalTaskEdit = true;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 rotate-45 icon icon-tabler icon-tabler-pinned" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M9 4v6l-2 4v2h10v-2l-2 -4v-6"></path>
+                                                            <line x1="12" y1="16" x2="12" y2="21"></line>
+                                                            <line x1="8" y1="4" x2="16" y2="4"></line>
+                                                        </svg>
+                                                    </a>
+                                                </td>
+                                                <td class="px-6 whitespace-nowrap">
+                                                    <a href="#" class="inline-flex px-2 text-xs font-medium leading-5 rounded" title="Filter by this status" :class="get_task_status(task.id).class" x-text="get_task_status(task.id).title"></a>
+                                                </td>
+                                                <td class="px-6 whitespace-nowrap">
+                                                    <div>
+                                                        <template x-for="user in get_task_assignees( task.id )" :key="user.username" class="flex -space-x-1 overflow-hidden">
+                                                            <a href="#">
+                                                                <img class="inline-block w-6 h-6 rounded-full ring-2 ring-white" x-bind:src="user.avatar" x-bind:alt="user.full_name" x-bind:title="user.full_name">
+                                                            </a>
+                                                        </template>
+                                                    </div>
+                                                </td>
+                                                <td class="gap-1 px-6 whitespace-nowrap">
+                                                    <template x-for="list in get_task_lists( task.id )" :key="list.id">
+                                                        <a href="#" class="inline-flex p-1 mr-1 text-xs font-semibold leading-5 rounded" :class="[list.background, list.foreground]" title="Filter by this folder">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                                                                x-show="list.icon == 'cloud'" />
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                                                                x-show="list.icon == 'star'" />
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
+                                                                x-show="list.icon == 'server'" />
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                                                x-show="list.icon == 'cube'" />
+                                                            </svg>
+                                                        </a>
+                                                    </template>
+                                                </td>
+                                                <td class="gap-1 px-6 whitespace-nowrap"></td>
+                                            </tr>
+                                        </template>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between w-full px-8 pt-2 font-medium">
+                            <div>
+                                <a href="#" class="flex items-center px-2 font-medium text-gray-500 rounded-lg hover:text-indigo-500 group w-fit"
+                                @click.prevent="currentTaskId = create_task(); modalTaskEdit = true;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 icon icon-tabler icon-tabler-square-plus group-hover:text-indigo-800" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                        <line x1="9" y1="12" x2="15" y2="12"></line>
+                                        <line x1="12" y1="9" x2="12" y2="15"></line>
+                                    </svg>
+                                    <span class="flex-1 ml-2 text-sm whitespace-nowrap">New task</span>
+                                </a>
+                            </div>
+
+                            <div>
+                                <p class="text-xs text-gray-400 cursor-default">
+                                    <span x-text="tasks.length"></span> tasks
+                                    &sdot; 0% complete
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <aside class="flex flex-col min-h-screen col-span-2 pt-16 2xl:col-span-2 bg-slate-50">
+        <div class="w-full">
+            <div class="px-4 py-2 2xl:px-6" id="calendar"></div>
+        </div>
+    </aside>
+
+    <div id="modals">
+        <!-- Delete task -->
+        <div id="modal-task-delete" class="fixed inset-0 z-10 overflow-y-auto" aria-labelledby="modal-task-delete-title" role="dialog" aria-modal="true" x-show="modalTaskDelete" x-cloak>
+            <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true"></div>
+        
+                <!-- This element is to trick the browser into centering the modal contents. -->
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+                <div class="relative inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="w-6 h-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-task-delete-title">Delete task</h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500">Are you sure you want to delete this task? All its data will be permanently removed. This action cannot be undone.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        @click.prevent="delete_task( currentTaskId ); modalTaskDelete = false;">Delete</button>
+                        <button type="button" class="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        @click.prevent="modalTaskDelete = false;">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Edit task -->
+        <div id="modal-task-edit" class="fixed inset-0 z-10 overflow-y-auto" aria-labelledby="modal-task-edit-title" role="dialog" aria-modal="true" x-show="modalTaskEdit" x-cloak>
+            <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true"></div>
+        
+                <!-- This element is to trick the browser into centering the modal contents. -->
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+                <div class="relative inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                    <div class="p-5 sm:p-6">
+                        <div class="mb-8">
+                            <h3 class="text-lg font-medium leading-6 text-gray-900">
+                                Task #<span x-text="get_task( currentTaskId ).id"></span>
+                            </h3>
+                        </div>
+
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6">
+                                <label for="first-name" class="block text-sm font-medium text-gray-700">Title</label>
+                                <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" x-model="get_task( currentTaskId ).title">
+                            </div>
+                                                                        
+                            <div class="col-span-6">
+                                <label for="street-address" class="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea id="about" name="about" rows="3" class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="" x-model="get_task( currentTaskId ).description"></textarea>
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="country" class="block text-sm font-medium text-gray-700">Assignees</label>
+                                <select id="country" name="country" autocomplete="country-name" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" x-model="get_task( currentTaskId ).assignees" multiple>
+                                    <template x-for="user in users">
+                                        <option x-text="user.full_name" x-model="user.username"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="country" class="block text-sm font-medium text-gray-700">Folders</label>
+                                <select id="country" name="country" autocomplete="country-name" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" x-model="get_task( currentTaskId ).lists" multiple>
+                                    <template x-for="list in lists">
+                                        <option x-text="list.title" x-model="list.id"></option>
+                                    </template>
+                                </select>
+                            </div>                        
+                                                    
+                            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <label for="city" class="block text-sm font-medium text-gray-700">Start date</label>
+                                <input type="text" name="city" id="city" autocomplete="address-level2" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" x-model="get_task( currentTaskId ).start">
+                            </div>
+                        
+                            <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                <label for="region" class="block text-sm font-medium text-gray-700">End date</label>
+                                <input type="text" name="region" id="region" autocomplete="address-level1" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" x-model="get_task( currentTaskId ).end">
+                            </div>
+                        
+                            <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                <label for="postal-code" class="block text-sm font-medium text-gray-700">Remember me</label>
+                                <select id="country" name="country" autocomplete="country-name" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    <option value="">Never</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-6 my-0 border-b"></div>
+
+                            <div class="col-span-6">
+                                <label class="block text-sm font-medium text-gray-700">Attachments</label>
+                                <div class="flex justify-center px-6 pt-5 pb-6 mt-2 border-2 border-gray-300 border-dashed rounded-md">
+                                    <div class="space-y-1 text-center">
+                                        <svg class="w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                        <div class="flex text-sm text-gray-600">
+                                            <label for="file-upload" class="relative font-medium text-indigo-600 bg-white rounded-md cursor-pointer hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                                <span>Upload a file</span>
+                                                <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                            </label>
+                                            <p class="pl-1">or drag and drop</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500">
+                                            PNG, JPG, GIF up to 2MB
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-span-6 my-2 border-b"></div>
+
+                            <div class="col-span-6">
+                                <label for="postal-code" class="block text-sm font-medium text-gray-700">Comments</label>
+                                <div class="flex items-center w-full mt-2 text-gray-500">
+                                    <div class="mr-4">
+                                        <img class="w-8 h-8 rounded-full" x-bind:src="users[0]['avatar']" x-bind:alt="users[0]['full_name']">
+                                    </div>
+
+                                    <input type="text" name="comment" placeholder="Add a comment&hellip;" class="w-full h-10 px-5 pr-10 text-sm transition-all bg-transparent border border-gray-200 rounded-md shadow-sm hover:shadow focus:ring-0 focus:outline-none focus:bg-white hover:bg-white">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 sm:px-6 sm:flex">
+                        <button type="button" class="inline-flex justify-center w-full px-4 py-2 mt-3 mr-auto text-base font-medium text-red-700 transition-colors bg-white border border-red-600 rounded-md shadow-sm focus:bg-red-700 hover:bg-red-700 hover:text-white focus:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:w-auto sm:text-sm"
+                        @click.prevent="modalTaskEdit = false; modalTaskDelete = true;">Delete</button>
+
+                        <button type="button" class="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        @click.prevent="currentTaskId = null; modalTaskEdit = false;">Cancel</button>
+                        <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white transition-colors bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        @click.prevent="currentTaskId = null; modalTaskEdit = false;">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js" integrity="sha256-YicH/8aE660iEnJtgll3vT54dJApy3XkYmqNfGVFEzA=" crossorigin="anonymous"></script>    
+
+    <script src="./scripts.js"></script>
+
+</body>
+</html>

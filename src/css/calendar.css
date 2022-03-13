@@ -1,0 +1,88 @@
+.fc {
+    font-size: .75rem;
+}
+
+/* Calendar */
+.fc .fc-toolbar-title {
+    /* color: rgba(0, 0, 0, .6); */
+    /* font-size: .875rem; */
+    font-weight: 500;
+
+    font-size: .75rem;
+    color: rgba(107, 114, 128, 1);  /* text-gray-50 */
+    text-transform: uppercase;
+
+    padding-left: .5rem;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+    height: 48px;
+    margin-bottom: .25rem;
+}
+
+.fc .fc-button-primary {
+    background: none;
+    border: none;
+
+    color: rgba(0, 0, 0, .6);
+}
+
+.fc .fc-scrollgrid,
+.fc-theme-standard td, .fc-theme-standard th {
+    border: none;
+}
+
+.fc .fc-scrollgrid-section-sticky > * {
+    background: none;
+}
+
+.fc .fc-daygrid-day-top {
+    color: rgba(0, 0, 0, .6);
+    font-weight: 500;
+    justify-content: center;
+}
+
+/* .fc .fc-col-header {
+    background: rgb(129 140 248 / .15);;
+    border-radius: .5rem;
+} */
+
+.fc .fc-col-header-cell-cushion {
+    /* display:  none; */
+    
+    overflow: hidden;
+    max-width: 1ch;
+    
+    color: rgba(0, 0, 0, .25);
+    /* color: rgb(129 140 248); */
+    /* color: rgb(99 102 241); */
+
+    font-family: monospace;
+    padding: 0;
+}
+
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+    min-height: .5em;
+}
+.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
+    margin: 0;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: rgb(224 231 255);
+    border-radius: .5rem;
+}
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+    color: rgb(67 56 202);
+}
+
+.fc-daygrid-event {
+    justify-content: center;
+}
+.fc-daygrid-event .fc-event-time,
+.fc-daygrid-dot-event .fc-event-title {
+    display: none;
+}
+.fc-daygrid-dot-event.fc-event-mirror, .fc-daygrid-dot-event:hover {
+    background-color: transparent;
+}

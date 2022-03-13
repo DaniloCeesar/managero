@@ -1,0 +1,40 @@
+{
+    "name": "managero",
+    "version": "1.0.0",
+    "description": "Boost your productivity",
+    "main": "tailwind.config.js",
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.0",
+        "@tailwindcss/typography": "^0.5.2",
+        "postcss-import": "^14.0.2",
+        "tailwindcss": "^3.0.23",
+        "uglify-js": "^3.14.5"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "rm -R dist && mkdir -p dist && cp -R public/* dist/ && postcss -i src/css/*.css -o dist/style.css --minify && uglifyjs --compress --mangle -- src/js/*.js > dist/scripts.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/daniloceesar/managero.git"
+    },
+    "keywords": [
+        "todolist",
+        "todoapp",
+        "todo",
+        "productivity",
+        "kanban",
+        "boards",
+        "tailwindcss",
+        "alpinejs"
+    ],
+    "author": "Danilo César",
+    "license": "MPL-2.0",
+    "bugs": {
+        "url": "https://github.com/daniloceesar/managero/issues"
+    },
+    "homepage": "https://github.com/daniloceesar/managero",
+    "dependencies": {
+        "postcss-cli": "^9.1.0"
+    }
+}
