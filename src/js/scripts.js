@@ -1,11 +1,14 @@
 function app() {
     return {
-        // Frontend vars
+        // Definitions for the frontend ---
+
         modalTaskDelete: false,
         modalTaskEdit: false,
+
         currentTaskId: null,
 
-        // Database
+        // Database ---
+
         users: [
             {
                 id: "92aa-40fc-a42a-5a731d878d7c",
@@ -64,6 +67,8 @@ function app() {
                 is_favorite: true
             },
         ],
+
+        tasks: [],
 
         defaultTasks: [
             {
@@ -148,6 +153,8 @@ function app() {
             }
         ],
 
+        // Localization ---
+
         i18n: {
             status: {
                 0: {
@@ -167,6 +174,8 @@ function app() {
                 },
             },
         },
+
+        // Methods ---
 
         get_user( userUsername ) {
             return this.users.find(function(item) {
