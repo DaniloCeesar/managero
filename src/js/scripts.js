@@ -236,6 +236,23 @@ function app() {
         //     return tasks;
         // },
 
+        get_tasks_by_status() {
+            const app = this;
+
+            result = this.tasks.reduce(function(previousValue, currentValue) {
+                let currentStatus = String( app.i18n.status[ currentValue.status ].title );
+                // console.info( currentStatus, previousValue, currentValue );
+
+                previousValue[currentStatus] = previousValue[currentStatus] || [];
+                previousValue[currentStatus].push(currentValue);
+                return previousValue;
+            }, Object.create(null));
+
+            result = JSON.parse( JSON.stringify( result ) ); // @FIX: convert new Object to JSON Object
+
+            return result;
+        },
+
         create_task( prefilled = {} ) {
             let newTask = {
                 id: crypto.randomUUID(),
