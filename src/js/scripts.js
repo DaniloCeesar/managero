@@ -177,18 +177,33 @@ function app() {
 
         // Methods ---
 
+        /**
+         * Get user data by user's username
+         * @param {string} userUsername 
+         * @returns array
+         */
         get_user( userUsername ) {
             return this.users.find(function(item) {
                 return item.username == userUsername;
             });
         },
 
+        /**
+         * Get list data by list's Id
+         * @param {string} listId 
+         * @returns Object
+         */
         get_list( listId ) {
             return this.lists.find(function(item) {
                 return item.id == listId;
             });
         },
 
+        /**
+         * Get task data by task's Id
+         * @param {string} taskId 
+         * @returns Object
+         */
         get_task( taskId ) {
             if ( taskId == undefined ) { return false; }
 
@@ -198,6 +213,11 @@ function app() {
             });
         },
 
+        /**
+         * Get task list by task's Id
+         * @param {string} taskId 
+         * @returns array
+         */
         get_task_lists( taskId ) {
             let currentTask = this.get_task( taskId );
             if ( typeof currentTask === 'undefined' ) { return []; }
@@ -215,6 +235,11 @@ function app() {
             return currentTaskListsObject;
         },
         
+        /**
+         * Get task assigneed users by task's Id
+         * @param {string} taskId 
+         * @returns Object
+         */
         get_task_assignees( taskId ) {
             let currentTask = this.get_task( taskId );
             // console.info( currentTask, (typeof currentTask === 'undefined') );
@@ -233,6 +258,11 @@ function app() {
             return currentTaskAssigneesObject;
         },
 
+        /**
+         * Get task status Object by task's Id
+         * @param {string} taskId 
+         * @returns Object
+         */
         get_task_status( taskId ) {
             let currentTask = this.get_task( taskId );
             if ( typeof currentTask === 'undefined' ) { return []; }
@@ -241,10 +271,10 @@ function app() {
             return this.i18n.status[ currentTask.status ];
         },
 
-        // get_task_events() {
-        //     return tasks;
-        // },
-
+        /**
+         * Get all tasks grouped by status
+         * @returns array
+         */
         get_tasks_by_status() {
             const app = this;
 
@@ -262,6 +292,11 @@ function app() {
             return result;
         },
 
+        /**
+         * Create a new task
+         * @param {Object} prefilled 
+         * @returns string
+         */
         create_task( prefilled = {} ) {
             let newTask = {
                 id: crypto.randomUUID(),
@@ -297,15 +332,22 @@ function app() {
             return newTask.id;
         },
 
+        /**
+         * Delete a task by its Id
+         * @param {string} taskId 
+         */
         delete_task( taskId ) {
             this.tasks = this.tasks.filter(m => m.id !== taskId);
             this.currentTaskId = null;
         },
 
+        /**
+         * Initialize the application
+         * Load `localStorage` data from client's browser, or the `defaultTasks` Object, if there is not any data stored
+         */
         init() {
             this.tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-            // console.info( this.tasks );
-
+        
             if ( this.tasks == null || this.tasks.length === 0 ) {
                 this.tasks = this.defaultTasks;
             }
