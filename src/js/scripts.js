@@ -12,10 +12,10 @@ function app() {
         users: [
             {
                 id: "92aa-40fc-a42a-5a731d878d7c",
-                username: "danilo",
+                username: "default",
 
-                first_name: "Danilo",
-                full_name: "Danilo César",
+                first_name: "Default",
+                full_name: "Default User",
                 avatar: "https://i.pravatar.cc/48?u=92aa-40fc-a42a-5a731d878d7c"
             },
             {
@@ -86,7 +86,7 @@ function app() {
                         title: "First comment",
                         content: "Here goes my first comment.",
 
-                        author: "danilo",
+                        author: "default",
                         created_date: "2022-03-09T07:35:16Z",
                         modified_date: "2022-03-09T07:35:16Z"
                     }
@@ -104,7 +104,7 @@ function app() {
                 ],
 
                 assignees: [
-                    "danilo"
+                    "default"
                 ],
                 lists: [
                     "ea4838a2-90a9-4160-a374-2fe9e0236f94",
