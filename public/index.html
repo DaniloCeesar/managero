@@ -8,26 +8,28 @@
     <meta name="author" content="Danilo César">
     <title>manaĝero</title>
 
-    <link href="./favicon.ico" rel="icon">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="mask-icon" href="./assets/safari-pinned-tab.svg" color="#3730a3">
+    <meta name="msapplication-TileColor" content="#e0e7ff">
+    <meta name="theme-color" content="#ffffff">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" integrity="sha256-5veQuRbWaECuYxwap/IOE/DAwNxgm4ikX7nrgsqYp88=" crossorigin="anonymous">
     
     <link rel="stylesheet" href="./style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="grid min-h-screen grid-cols-12 gap-0" x-data="app()" x-init="$watch('tasks', (val) => localStorage.setItem('tasks', JSON.stringify(val)))">
 
     <aside class="flex flex-col min-h-screen col-span-2 2xl:col-span-2 bg-slate-50">
         <div class="px-4 py-5">
-            <a href="#" class="flex items-center text-lg font-bold text-indigo-600 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-current icon icon-tabler icon-tabler-checkbox" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <polyline points="9 11 12 14 20 6"></polyline>
-                    <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
-                </svg>
+            <a href="#" class="flex items-center text-lg font-bold text-indigo-800 rounded-lg">
+                <img src="./assets/apple-touch-icon.png" class="w-6 h-6" alt="manaĝero">
                 <span class="ml-3">manaĝero</span>
             </a>
         </div>
