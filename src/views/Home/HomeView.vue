@@ -11,8 +11,8 @@ const links = [
   },
   {
     id: 2,
-    to: '/board',
-    label: 'Board',
+    to: '/boards',
+    label: 'Boards',
   },
   {
     id: 3,

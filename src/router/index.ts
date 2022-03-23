@@ -18,7 +18,7 @@ const router = createRouter({
           component: TasksView,
         },
         {
-          path: 'board',
+          path: 'boards',
           component: BoardView,
         },
         {
