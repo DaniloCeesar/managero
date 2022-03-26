@@ -1,5 +1,5 @@
 <div align="center">
-<img alt="Manaĝero" src="public/assets/apple-touch-icon.png" style="height:88px" />
+<img alt="Manaĝero" src="src/assets/apple-touch-icon.png" style="height:88px" />
 
 <h1>Manaĝero<br/><sub>Task management made simple.</sub></h1>
 
@@ -9,7 +9,7 @@
 <a href="#attributions">Attributions</a> |
 <a href="#license">License</a>
 
-<pre lang="bash"><code style="white-space: pre-line">Task management app, with boards and lists visualization, made using Alpine.js and Tailwind CSS.
+<pre lang="bash"><code style="white-space: pre-line">Task management app, with boards and lists visualization, made using Vue.js and Tailwind CSS.
 </code></pre>
 
 <img alt="Repository top language" src="https://img.shields.io/github/languages/top/daniloceesar/managero.svg" />
@@ -33,7 +33,7 @@ The aim of Manaĝero (in Esperanto: *manager*) is to integrate useful features t
 
 There are other open and closed-source applications that provide those same features, but only a few include both a nice User Interface (UI) and User Experience (UX) as the Manaĝero does.
 
-Also, Manaĝero differentiates itself from similar projects by using modern technologies. Our source code was made using: the utility-first CSS framework [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss); and the JavaScript framework [Alpine.js](https://github.com/alpinejs/alpine).
+Also, Manaĝero differentiates itself from similar projects by using modern technologies. Our source code was made using: the utility-first CSS framework [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss); and the progressive JavaScript framework [Vue.js](https://github.com/vuejs/core).
 
 ## 🛠️ Development & Testing
 
@@ -47,7 +47,8 @@ Also, Manaĝero differentiates itself from similar projects by using modern tech
 1. `git clone https://github.com/DaniloCeesar/managero.git` — clone this repository into a new directory;
 2. `cd managero` — change the current directory to this project source code;
 3. `npm install` — install the dependencies from `package.json` file into `node_modules` folder;
-4. `npm run build` — generate the code for production environment into `dist` directory.
+4. `npm run build` — generate the static assets for production environment;
+5. `npm run preview` — locally preview the production build.
 
 ## 👥 Attributions
 
