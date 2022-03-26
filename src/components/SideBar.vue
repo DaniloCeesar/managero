@@ -35,7 +35,7 @@ const lists = ref([
 </script>
 
 <template>
-  <aside class="min-h-screen bg-slate-50 flex flex-col">
+  <aside class="flex flex-col min-h-screen bg-slate-50">
     <div class="px-4 py-5">
       <RouterLink to="/" class="flex items-center text-lg font-bold text-indigo-800 rounded-lg">
         <img src="@/assets/apple-touch-icon.png" class="w-6 h-6" alt="manaĝero" />
