@@ -12,7 +12,7 @@ const tasks = reactive<Array<TaskRowProps>>([
     icon: 'cloud',
     background: 'bg-blue-100',
     foreground: 'text-blue-800',
-    assignes: ['https://github.com/joaom00.png'],
+    assignes: ['/avatar.svg'],
   },
   {
     id: 2,
@@ -22,7 +22,7 @@ const tasks = reactive<Array<TaskRowProps>>([
     icon: 'star',
     background: 'bg-blue-100',
     foreground: 'text-blue-800',
-    assignes: ['https://github.com/joaom00.png'],
+    assignes: ['/avatar.svg'],
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ const tasks = reactive<Array<TaskRowProps>>([
     icon: 'server',
     background: 'bg-orange-100',
     foreground: 'text-orange-800',
-    assignes: ['https://github.com/joaom00.png'],
+    assignes: ['/avatar.svg'],
   },
   {
     id: 4,
@@ -42,7 +42,7 @@ const tasks = reactive<Array<TaskRowProps>>([
     icon: 'cube',
     background: 'bg-purple-100',
     foreground: 'text-purple-800',
-    assignes: ['https://github.com/joaom00.png'],
+    assignes: ['/avatar.svg'],
   },
 ]);
 </script>

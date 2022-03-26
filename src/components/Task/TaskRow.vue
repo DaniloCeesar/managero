@@ -143,7 +143,7 @@ const toggleChecked = () => {
     </td>
     <td class="px-6 whitespace-nowrap">
       <button>
-        <img class="w-6 h-6 rounded-full" src="https://github.com/joaom00.png" />
+        <img class="w-6 h-6 rounded-full" src="/avatar.svg" title="Default User" />
       </button>
     </td>
     <td class="gap-1 px-6 whitespace-nowrap">

@@ -345,11 +345,7 @@ const lists = ref([
             type="button"
             class="inline-flex items-center justify-between w-full p-2 transition rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 active:bg-gray-50 group"
           >
-            <img
-              class="w-8 h-8 rounded-full"
-              x-bind:src="users[0]['avatar']"
-              x-bind:alt="users[0]['full_name']"
-            />
+            <img class="w-8 h-8 rounded-full" src="/avatar.svg" title="Default User" />
 
             <div class="flex flex-col items-start ml-3">
               <p class="text-sm font-medium text-gray-700" x-text="users[0]['first_name']"></p>
