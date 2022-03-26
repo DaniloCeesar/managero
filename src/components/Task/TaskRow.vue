@@ -59,7 +59,10 @@ const toggleChecked = () => {
             <path d="M9 12l2 2l4 -4" v-if="checked" />
           </svg>
         </label>
-        <a class="ml-2 text-sm text-gray-700 group-hover:text-gray-900" title="View this task"
+        <a
+          href="#"
+          class="ml-2 text-sm text-gray-700 group-hover:text-gray-900"
+          title="View this task"
           >New task</a
         >
       </div>
@@ -134,12 +137,13 @@ const toggleChecked = () => {
       </a>
     </td>
     <td class="px-6 whitespace-nowrap">
-      <span
+      <button
         class="inline-flex px-2 text-xs font-medium leading-5 rounded"
         title="Filter by this status"
         :class="statusStyles"
-        >{{ statusLabel }}</span
       >
+        {{ statusLabel }}
+      </button>
     </td>
     <td class="px-6 whitespace-nowrap">
       <button>
