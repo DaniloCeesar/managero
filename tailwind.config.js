@@ -1,11 +1,10 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require('tailwindcss/colors')
+// const defaultTheme = require('tailwindcss/defaultTheme');
+// const colors = require('tailwindcss/colors');
+
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-  content: [
-    "./public/*.html",
-    "./src/**/*.{html,js}"
-  ],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
 
   darkMode: 'class',
 
@@ -15,17 +14,14 @@ module.exports = {
     },
     extend: {
       spacing: {
-        '128': '32rem',
-        '144': '36rem',
+        128: '32rem',
+        144: '36rem',
       },
       borderRadius: {
         '4xl': '2rem',
-      }
-    }
+      },
+    },
   },
 
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/forms')
-  ],
-}
+  plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
+};
