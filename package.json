@@ -1,7 +1,7 @@
 {
   "name": "managero",
-  "version": "1.0.0",
-  "description": "Boost your productivity",
+  "version": "1.1.0",
+  "description": "Task management made simple",
   "main": "tailwind.config.js",
   "repository": {
     "type": "git",
@@ -15,14 +15,14 @@
     "kanban",
     "boards",
     "tailwindcss",
-    "alpinejs"
+    "vuejs"
   ],
   "author": "Danilo César",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/daniloceesar/managero/issues"
   },
-  "homepage": "https://github.com/daniloceesar/managero",
+  "homepage": "https://managero.netlify.app",
   "scripts": {
     "dev": "vite",
     "preview": "vite preview --port 5050 --host",
