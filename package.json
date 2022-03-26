@@ -25,11 +25,13 @@
   "homepage": "https://github.com/daniloceesar/managero",
   "scripts": {
     "dev": "vite",
-    "preview": "vite preview --port 5050",
+    "preview": "vite preview --port 5050 --host",
     "typecheck": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mkdir -p dist && cp -R public/* dist/ && postcss -i src/css/*.css -o dist/style.css --minify && uglifyjs --compress --mangle -- src/js/*.js > dist/scripts.js"
+    "build": "vite build",
+    "build:assets": "mkdir -p dist && cp -R public/* dist/ && postcss -i src/css/*.css -o dist/style.css --minify && uglifyjs --compress --mangle -- src/js/*.js > dist/scripts.js",
+    "serve": "vite preview"
   },
   "dependencies": {
     "vue": "^3.2.31",
