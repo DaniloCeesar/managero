@@ -145,7 +145,7 @@ const toggleChecked = () => {
         {{ statusLabel }}
       </button>
     </td>
-    <td class="px-6 whitespace-nowrap">
+    <td class="flex px-6 whitespace-nowrap">
       <button>
         <img class="w-6 h-6 rounded-full" src="/avatar.svg" title="Default User" />
       </button>
